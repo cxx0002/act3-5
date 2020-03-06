@@ -1,9 +1,9 @@
 import axios from "axios";
 // import store from '../store'
-// import {host,host2} from '../const'
+import {host} from '../const'
 // import router from "../router"
 // import { Message } from 'view-design'
-axios.defaults.baseURL = 'http://newtestuser.smaoxs.com';
+axios.defaults.baseURL = host;
 axios.default.time = 3000;
 // const token = localStorage.getItem("header");
 // axios.defaults.headers={ "x-user-token": token};

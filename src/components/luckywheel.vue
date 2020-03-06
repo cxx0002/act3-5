@@ -119,6 +119,7 @@
 <script>
 import "@/utils/bridge.js";
 import { prizeList } from "./config";
+import { host } from "../const";
 import axios from "axios";
 const CIRCLE_ANGLE = 360;
 
@@ -139,7 +140,7 @@ export default {
       backImg: backImg,
       loadingImg: loadingImg,
       dm: [],
-      host: "http://newtestuser.smaoxs.com",
+      host: host,
       endFlag: true,
       count: 100, // 剩余抽奖次数
       duration: 3000, // 转盘旋转时间
@@ -150,8 +151,7 @@ export default {
       havenot: false,
       goodsList: [], //获奖记录
       // token: "o9fZyMJ068NNOLTYfRy/o60RP7o=",
-      token:
-        "VuNpshQD980E987kna2b963xA17pOz0298IPVh0t9unwnf7kOfKksbnmRTGbikQys6pNlYnmnadIRHqt0891ljJGRjD6-j0k0SvboYNGOH5Clf3uOTnmnv5UlhNWi8DboYNCO6xkObnmnaQf7TxyR1kUKqGWlA5f9MKq967RTbxl-hQ5OqdWqdv3nbGb78kvna2bRt5fRjRuRa9yR8Du0S0k9jvC0akp9fdylj9C0SkbRtgbPD==",
+      token: "",
       loginStatus: null,
       activityId: 1,
       jpName: "",
@@ -377,7 +377,7 @@ export default {
       );
     }
 
-    that.checkLogin();
+    // that.checkLogin();
     setTimeout(() => {
       if (that.token == "") {
         this.noToken = true;
@@ -482,7 +482,7 @@ export default {
         headers: { "x-device-data": this.token }
       }).then(res => {
         this.loginValid = res.data.data.loginValid;
-        this.checkSuccess=true;
+        this.checkSuccess = true;
         this.getchanceList();
         this.getPrizeList();
       });
@@ -677,16 +677,24 @@ export default {
           this.activityId = res.data.data.activityId;
           this.reallyPrizeList[0].name = res.data.data.awards[0].title;
           this.reallyPrizeList[0].id = res.data.data.awards[0].id;
-          this.reallyPrizeList[0].icon = res.data.data.awards[0].img;
           this.reallyPrizeList[2].name = res.data.data.awards[1].title;
           this.reallyPrizeList[2].id = res.data.data.awards[1].id;
-          this.reallyPrizeList[2].icon = res.data.data.awards[1].img;
+          if (window.location.protocol == "https:") {
+            this.reallyPrizeList[0].icon = res.data.data.awards[0].img.replace(/http/g, "https");
+            this.reallyPrizeList[2].icon = res.data.data.awards[1].img.replace(/http/g, "https");
+            this.reallyPrizeList[4].icon = res.data.data.awards[2].img.replace(/http/g, "https");
+            this.reallyPrizeList[6].icon = res.data.data.awards[3].img.replace(/http/g, "https");
+          } else {
+            this.reallyPrizeList[0].icon = res.data.data.awards[0].img;
+            this.reallyPrizeList[2].icon = res.data.data.awards[1].img;
+            this.reallyPrizeList[4].icon = res.data.data.awards[2].img;
+            this.reallyPrizeList[6].icon = res.data.data.awards[3].img;
+          }
+
           this.reallyPrizeList[4].name = res.data.data.awards[2].title;
           this.reallyPrizeList[4].id = res.data.data.awards[2].id;
-          this.reallyPrizeList[4].icon = res.data.data.awards[2].img;
           this.reallyPrizeList[6].name = res.data.data.awards[3].title;
           this.reallyPrizeList[6].id = res.data.data.awards[3].id;
-          this.reallyPrizeList[6].icon = res.data.data.awards[3].img;
           this.getList();
           setTimeout(() => {
             this.getList();
